@@ -1,2 +1,4 @@
 pip-tools
 Scrapy
+django
+djangorestframework
