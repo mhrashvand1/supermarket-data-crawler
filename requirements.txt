@@ -83,6 +83,8 @@ pydispatcher==2.0.5
     # via scrapy
 pyopenssl==22.0.0
     # via scrapy
+python-decouple==3.6
+    # via -r requirements.in
 pytz==2022.1
     # via djangorestframework
 queuelib==1.6.2
