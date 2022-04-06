@@ -31,7 +31,7 @@ class Product(models.Model):
     discounted_price = models.BigIntegerField('discounted price', null=True, blank=True)
     discount_percent = models.IntegerField('discount percent', null=True, blank=True)
     rating_value = models.IntegerField('rate from 100', null=True, blank=True)
-    status = models.CharField('status', null=True, blank=True)
+    status = models.CharField('status', max_length=30, null=True, blank=True)
 
     class Meta:
         indexes = [
@@ -42,7 +42,7 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.product_id}/{self.title}/{self.selling_price}'
     
-class Category(models.model):
+class Category(models.Model):
     cat_id = models.SlugField("category ID", unique=True)   
     code = models.CharField('category code', max_length=70, null=True, blank=True)
     title = models.CharField('title', max_length=500, null=True, blank=True)
