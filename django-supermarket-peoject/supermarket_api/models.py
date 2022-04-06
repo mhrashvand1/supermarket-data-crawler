@@ -2,7 +2,9 @@ from django.db import models
 
 
 class Product(models.Model):
-    product_id = models.SlugField('product_id', unique=True)   
+    
+    product_id = models.SlugField('product_id', unique=True) 
+    #main category  
     category = models.ForeignKey(
         to='Category', to_field='cat_id',
         on_delete=models.SET_NULL, 
@@ -18,6 +20,7 @@ class Product(models.Model):
         to='Brand', to_field='brand_id', on_delete=models.SET_NULL,
         related_name='products', null=True, blank=True
     )
+    #vendor: scrapted site. for example Digikala, snapmarket
     vendor = models.ForeignKey(
         to='Vendor', to_field='name', on_delete=models.CASCADE,
         related_name='products'
@@ -29,7 +32,9 @@ class Product(models.Model):
     
     title = models.CharField('title', max_length=500, null=True, blank=True)
     description = models.TextField('description', null=True, blank=True)
+    #Average rating given by users 
     rating_value = models.IntegerField('rate from 100', null=True, blank=True)
+    #status of product like merketable, unavailable, Stop production, ...
     status = models.CharField('status', max_length=30, null=True, blank=True)
 
     class Meta:
@@ -56,7 +61,8 @@ class Seller(models.Model):
     def __str__(self):
         return f'{self.seller_id}/{self.title}'   
     
-    
+# middle table for manytomany relation between product and seller
+#with extra fields contained selling info: selling_price, discounted_price, discount_percent
 class ProductPriceSeller(models.Model):
     product = models.ForeignKey(
         to='Product', to_field='product_id',
@@ -80,7 +86,7 @@ class ProductPriceSeller(models.Model):
     
 class Category(models.Model):
     cat_id = models.SlugField("category ID", unique=True)   
-    code = models.CharField('category code', max_length=70, null=True, blank=True)
+    cat_code = models.CharField('category code', max_length=70, null=True, blank=True)
     title = models.CharField('title', max_length=500, null=True, blank=True)
 
     class Meta:
@@ -93,7 +99,7 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
     sub_cat_id = models.SlugField("subcategory ID", unique=True)   
-    code = models.CharField('subcategory code',max_length=70 ,null=True, blank=True)
+    sub_cat_code = models.CharField('subcategory code',max_length=70 ,null=True, blank=True)
     title = models.CharField('title', max_length=500, null=True, blank=True)
     category = models.ForeignKey(
         to='Category', to_field='cat_id',
@@ -124,7 +130,7 @@ class Brand(models.Model):
         return f'{self.brand_id}/{self.title}'
 
 
-
+# each product maybe has one or more images
 class Images(models.Model):
     url = models.URLField('url', null=True, blank=True)
     product = models.ForeignKey(
