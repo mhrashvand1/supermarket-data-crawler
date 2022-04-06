@@ -4,8 +4,6 @@
 #
 #    pip-compile requirements.in
 #
-asgiref==3.5.0
-    # via django
 attrs==21.4.0
     # via
     #   automat
@@ -19,8 +17,6 @@ cffi==1.15.0
     # via cryptography
 charset-normalizer==2.0.12
     # via requests
-click==8.1.2
-    # via pip-tools
 constantly==15.1.0
     # via twisted
 cryptography==36.0.2
@@ -32,12 +28,6 @@ cssselect==1.1.0
     # via
     #   parsel
     #   scrapy
-django==4.0.3
-    # via
-    #   -r requirements.in
-    #   djangorestframework
-djangorestframework==3.13.1
-    # via -r requirements.in
 filelock==3.6.0
     # via tldextract
 hyperlink==21.0.0
@@ -65,10 +55,6 @@ parsel==1.6.0
     # via
     #   itemloaders
     #   scrapy
-pep517==0.12.0
-    # via pip-tools
-pip-tools==6.5.1
-    # via -r requirements.in
 protego==0.2.1
     # via scrapy
 pyasn1==0.4.8
@@ -83,10 +69,6 @@ pydispatcher==2.0.5
     # via scrapy
 pyopenssl==22.0.0
     # via scrapy
-python-decouple==3.6
-    # via -r requirements.in
-pytz==2022.1
-    # via djangorestframework
 queuelib==1.6.2
     # via scrapy
 requests==2.27.1
@@ -107,12 +89,8 @@ six==1.16.0
     #   requests-file
     #   service-identity
     #   w3lib
-sqlparse==0.4.2
-    # via django
 tldextract==3.2.0
     # via scrapy
-tomli==2.0.1
-    # via pep517
 twisted==22.2.0
     # via scrapy
 typing-extensions==4.1.1
@@ -124,13 +102,10 @@ w3lib==1.22.0
     #   itemloaders
     #   parsel
     #   scrapy
-wheel==0.37.1
-    # via pip-tools
 zope-interface==5.4.0
     # via
     #   scrapy
     #   twisted
 
 # The following packages are considered to be unsafe in a requirements file:
-# pip
 # setuptools
