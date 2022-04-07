@@ -12,10 +12,10 @@ class CrawlerItem(scrapy.Item):
     title = scrapy.Field()
     description = scrapy.Field()
     rating_value = scrapy.Field()
-    status = scrapy.Field() 
+    status = scrapy.Field()
     #selling_info:
     #list of sellers with fields below:
-    #seller_id, seller_code, title, selling_price, discounted_price, discount_percent    
+    #seller_id, seller_code, title, price, discounted_price, discount_percent    
     selling_info = scrapy.Field() 
     # main category
     #fields: cat_id, cat_code, title  

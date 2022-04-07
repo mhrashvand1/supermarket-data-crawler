@@ -1,5 +1,5 @@
 import scrapy
-
+from crawler.items import CrawlerItem
 
 class DigikalaSpider(scrapy.Spider):
     name = "digikala"
@@ -47,8 +47,96 @@ class DigikalaSpider(scrapy.Spider):
             )
             
     def product_parse(self, response):
-        category = response.meta['category']
+        #parse and return product info
+        item = CrawlerItem()
+        category = response.meta['category']        
         response = response.json()
-        yield {
-            "implemented":False
-        }  
+        
+        item['category'] = category
+        item['sub_category'] = self.get_sub_category(response)
+        item['selling_info'] = self.get_selling_info(response)
+        item['product_id'] = self.get_product_id(response)
+        item['title'] = self.get_title(response)
+        item['description'] = self.get_description(response)
+        item['status'] = response['data']['product'].get('status')
+        item['rating_value'] = self.get_rating_value(response)
+        item['brand'] = self.get_brand(response)
+        item['images'] = self.get_images(response)
+        item['vendor'] = {"name":"digikala", "url":"https://www.digikala.com/"}
+        
+        yield item
+        
+    @staticmethod     
+    def get_selling_info(res):
+        #if product is marketable: return list of sellers with their price
+        #else: return empty list
+        result=list()
+        #variants is list of sellers and their price
+        variants = res['data']['product'].get('variants')
+        if variants and isinstance(variants, list):
+            for v in variants:
+                result.append(
+                    {
+                        "seller_id":str(v["seller"]["id"])+"-D",
+                        "seller_code":str(v["seller"]["code"])+"-D",
+                        "title":v["seller"]["title"],
+                        "price":v["price"]["rrp_price"]/10,
+                        "discounted_price":v["price"]["selling_price"]/10,
+                        "discount_percent":v["price"]["discount_percent"],
+                    }
+                )
+        return result
+    
+    @staticmethod
+    def get_sub_category(res):
+        sub_category = res['data']['product'].get('category')
+        if sub_category and isinstance(sub_category, dict):
+            return {
+                "sub_cat_id":str(sub_category.get("id"))+"-D",
+                "sub_cat_code":str(sub_category.get("code"))+"-D",
+                "title":sub_category.get("title_fa")
+            }
+     
+    @staticmethod        
+    def get_product_id(res):
+        id = res['data']['product'].get("id")
+        if id:
+            return str(id)+"-D"
+    
+    @staticmethod
+    def get_title(res):
+        return  res['data']['product'].get("title_fa")
+     
+    @staticmethod                     
+    def get_description(res):
+        review = res['data']['product'].get('review')
+        if review and isinstance(review, dict):
+            return review.get('description')
+    
+    @staticmethod    
+    def get_rating_value(res):
+        rating = res['data']['product'].get('rating')
+        if rating:
+            return rating.get("rate")
+     
+    @staticmethod
+    def get_brand(res):
+        brand = res['data']['product'].get('brand')
+        if brand and isinstance(brand, dict):
+            return {
+                "brand_id":str(brand.get("id")) + "-D",
+                "brand_code":str(brand.get("code")) + "-D",
+                "title":brand.get("title_fa")
+            }
+    
+    @staticmethod        
+    def get_images(res):
+        result = list()
+        images = res['data']['product'].get('images')       
+        main_img = images.get('main')
+        result.append(main_img.get('url')[0])
+        
+        list_img = images.get('list')
+        for img in list_img:
+            result.append(img.get('url')[0])
+        return result
