@@ -34,7 +34,7 @@ class Product(models.Model):
     description = models.TextField('description', null=True, blank=True)
     #Average rating given by users 
     rating_value = models.IntegerField('rate from 100', null=True, blank=True)
-    #status of product like merketable, unavailable, Stop production, ...
+    #status of product: merketable, out_of_stock, stop_production, ...
     status = models.CharField('status', max_length=30, null=True, blank=True)
 
     class Meta:
