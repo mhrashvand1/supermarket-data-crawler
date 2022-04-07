@@ -25,7 +25,7 @@ class Product(models.Model):
         to='Vendor', to_field='name', on_delete=models.CASCADE,
         related_name='products'
     )
-    selling_info = models.ManyToManyField(
+    seller = models.ManyToManyField(
         to='Seller', through='ProductPriceSeller',
         related_name='products', blank=True
         )
@@ -65,11 +65,11 @@ class Seller(models.Model):
 #with extra fields contained selling info: selling_price, discounted_price, discount_percent
 class ProductPriceSeller(models.Model):
     product = models.ForeignKey(
-        to='Product', to_field='product_id',
+        to='Product', to_field='product_id', related_name='selling_infos',
         on_delete=models.CASCADE      
     )
     seller = models.ForeignKey(
-        to='Seller', to_field='seller_id',
+        to='Seller', to_field='seller_id', related_name='selling_infos',
         on_delete=models.CASCADE
     )
     selling_price = models.BigIntegerField('price', null=True, blank=True)
