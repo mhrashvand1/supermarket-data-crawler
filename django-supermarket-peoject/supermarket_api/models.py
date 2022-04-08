@@ -1,16 +1,14 @@
 from django.db import models
 
 
-class Product(models.Model):
-    
+class Product(models.Model):  
     product_id = models.SlugField('product_id', unique=True) 
     #main category  
     category = models.ForeignKey(
         to='Category', to_field='cat_id',
         on_delete=models.SET_NULL, 
         related_name='products', null=True, blank=True
-        )
-    
+        )    
     brand = models.ForeignKey(
         to='Brand', to_field='brand_id', on_delete=models.SET_NULL,
         related_name='products', null=True, blank=True
@@ -19,14 +17,11 @@ class Product(models.Model):
     vendor = models.ForeignKey(
         to='Vendor', to_field='name', on_delete=models.CASCADE,
         related_name='products'
-    )
-    
+    )   
     title = models.CharField('title', max_length=500, null=True, blank=True)
     description = models.TextField('description', null=True, blank=True)
-    #Average rating given by users 
+    #Average rating given by users
     rating_value = models.IntegerField('rate from 100', null=True, blank=True)
-    #status of product: merketable, unmarketable
-    status = models.CharField('status', max_length=30, null=True, blank=True)
     selling_price = models.BigIntegerField('price', null=True, blank=True)
     discounted_price = models.BigIntegerField('discounted price', null=True, blank=True)
     discount_percent = models.IntegerField('discount percent', null=True, blank=True)
