@@ -2,6 +2,12 @@ from django.db import models
 
 
 class Product(models.Model):  
+    
+    STATUS_CHOICES = [
+    ('M', 'merketable'),
+    ('U', 'unmarketable'),
+    ]
+    
     product_id = models.SlugField('product_id', unique=True) 
     #main category  
     category = models.ForeignKey(
@@ -22,15 +28,20 @@ class Product(models.Model):
     description = models.TextField('description', null=True, blank=True)
     #Average rating given by users
     rating_value = models.IntegerField('rate from 100', null=True, blank=True)
-    selling_price = models.BigIntegerField('price', null=True, blank=True)
+    price = models.BigIntegerField('price', null=True, blank=True)
     discounted_price = models.BigIntegerField('discounted price', null=True, blank=True)
     discount_percent = models.IntegerField('discount percent', null=True, blank=True)
+    status = models.CharField('status', max_length=1, choices=STATUS_CHOICES, null=True, blank=True)
     
     class Meta:
         indexes = [
             models.Index(fields=['product_id']),
             models.Index(fields=['category']),
         ]
+
+    def discount_diffrence(self):
+        if self.status == 'M':
+            return self.price - self.discounted_price
 
     def __str__(self):
         return f'{self.product_id}/{self.title}/{self.selling_price}'
