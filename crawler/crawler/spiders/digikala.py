@@ -1,46 +1,40 @@
 import scrapy
 from crawler.items import CrawlerItem
 from urllib.parse import quote
-from crawler.spiders.utils import digikala_category_adapter
+from crawler.spiders.utils import DIGIKALA_CATEGORY_ADAPTER
 
 
 class DigikalaSpider(scrapy.Spider):
     name = "digikala"
     
     start_urls = [
-        #all category inside supermarket exclude natural-flower
-        'https://api.digikala.com/v1/categories/beverages/search/',
-        'https://api.digikala.com/v1/categories/breakfast/search/',
-        'https://api.digikala.com/v1/categories/protein-foods/search/',
-        'https://api.digikala.com/v1/categories/dairy/search/',
-        'https://api.digikala.com/v1/categories/groceries/search/',
-        'https://api.digikala.com/v1/categories/fruits-and-vegetables/search/',
-        'https://api.digikala.com/v1/categories/snacks/search/',
-        'https://api.digikala.com/v1/categories/dried-fruit-nuts/search/',
-        'https://api.digikala.com/v1/categories/ready-made-canned-food/search/',
-        'https://api.digikala.com/v1/categories/frozen-food/search/',
-        'https://api.digikala.com/v1/categories/home-hygiene/search/'
-        'https://api.digikala.com/v1/categories/personal-hygiene/search/',
-        'https://api.digikala.com/v1/categories/condiments/search/',
-        'https://api.digikala.com/v1/categories/baby-and-mother/search/',
-        'https://api.digikala.com/v1/categories/fresh-pastry/search/',
-        'https://api.digikala.com/v1/categories/finger_food/search/',
-        'https://api.digikala.com/v1/categories/dietary_and_medicinal_supplements/search/'
-        ]
+        'https://api.digikala.com/v1/categories/food-beverage/',
+    ]
 
     def parse(self, response):
-        #request to each page of categories
+        #get categories inside supermarket and request to their urls
+        response = response.json()
+        for category in response['data']['sub_categories']:
+            code = category['code']
+            yield scrapy.Request(
+                url=f"https://api.digikala.com/v1/categories/{code}/search/",
+                callback=self.page_parse
+            )
+        
+            
+    def page_parse(self, response):
+        #get total pages and request to each page
         url = response.url
         response = response.json()
-        #total_pages = response['data']['pager']['total_pages']
-        for page_num in range(1, 21):
+        total_pages = response['data']['pager']['total_pages']
+        for page_num in range(1, total_pages+1):
             yield scrapy.Request(
                 url= url + f'?page={page_num}',
                 callback=self.product_url_parse
             )
-            
+           
     def product_url_parse(self, response):
-        #request to products url and send category info from mata
+        #request to products url and send category info from meta
         response = response.json()
         for product in response['data']['products']:
             yield scrapy.Request(
@@ -57,7 +51,7 @@ class DigikalaSpider(scrapy.Spider):
         cat_id = response.meta['category_id']     
         response = response.json()
         
-        item['category'] = digikala_category_adapter(cat_id)
+        item['category'] = DIGIKALA_CATEGORY_ADAPTER.get(cat_id)
         item['selling_info'] = self.get_selling_info(response)
         item['product_id'] = self.get_product_id(response)
         item['title'] = self.get_title(response)
@@ -115,14 +109,13 @@ class DigikalaSpider(scrapy.Spider):
     
     @staticmethod        
     def get_images(res):
-        result = list()
+        result = dict()
         images = res['data']['product'].get('images')       
         main_img = images.get('main')
-        result.append(main_img.get('url')[0])
-        
         list_img = images.get('list')
-        for img in list_img:
-            result.append(img.get('url')[0])
+        
+        result['main_image'] = main_img.get('url')[0]
+        result['other_images'] = [img.get('url')[0] for img in list_img]
         return result
     
     @staticmethod
