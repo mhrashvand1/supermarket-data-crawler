@@ -14,8 +14,8 @@ class CrawlerItem(scrapy.Item):
     rating_value = scrapy.Field()
     #marketable, unmarketable
     status = scrapy.Field()
-    #selling_info:
-    # price, discounted_price, discount_percent    
+    #selling_info
+    #fields: price, discounted_price, discount_percent    
     selling_info = scrapy.Field() 
     # category
     #fields: cat_id, title  
@@ -27,6 +27,7 @@ class CrawlerItem(scrapy.Item):
     #fields: name, url
     vendor = scrapy.Field()
     #list of product images
+    #fields: main_image, other_images
     images = scrapy.Field()
     
   
