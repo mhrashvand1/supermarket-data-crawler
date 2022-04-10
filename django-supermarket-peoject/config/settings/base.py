@@ -28,7 +28,6 @@ SECRET_KEY = 'ddd'  #for test
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'supermarket_api.apps.SupermarketApiConfig'
+    'supermarket_api.apps.SupermarketApiConfig',
+    'account_api.apps.AccountApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -103,3 +103,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#custom user model
+AUTH_USER_MODEL = 'account_api.User'

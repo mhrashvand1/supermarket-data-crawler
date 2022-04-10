@@ -4,8 +4,8 @@ from django.db import models
 class Product(models.Model):  
     
     STATUS_CHOICES = [
-    ('M', 'merketable'),
-    ('U', 'unmarketable'),
+    ('merketable', 'merketable'),
+    ('unmarketable', 'unmarketable'),
     ]
     
     product_id = models.SlugField('product_id', unique=True) 
@@ -15,7 +15,7 @@ class Product(models.Model):
         related_name='products', null=True, blank=True
         )    
     brand = models.ForeignKey(
-        to='Brand', to_field='brand_id', on_delete=models.SET_NULL,
+        to='Brand', to_field='brand_code', on_delete=models.SET_NULL,
         related_name='products', null=True, blank=True
     )
     #vendor: scrapted site. for example Digikala, snapmarket
@@ -35,7 +35,7 @@ class Product(models.Model):
     price = models.BigIntegerField('price', null=True, blank=True)
     discounted_price = models.BigIntegerField('discounted price', null=True, blank=True)
     discount_percent = models.IntegerField('discount percent', null=True, blank=True)
-    status = models.CharField('status', max_length=1, choices=STATUS_CHOICES, null=True, blank=True)
+    status = models.CharField('status', max_length=12, choices=STATUS_CHOICES, null=True, blank=True)
     
     class Meta:
         indexes = [
@@ -44,11 +44,11 @@ class Product(models.Model):
         ]
 
     def discount_diffrence(self):
-        if self.status == 'M':
+        if self.status == 'merketable':
             return self.price - self.discounted_price
 
     def __str__(self):
-        return f'{self.product_id}/{self.title}/{self.selling_price}'
+        return f'{self.product_id}/{self.title}/{self.discounted_price}'
     
 
     
@@ -67,21 +67,21 @@ class Category(models.Model):
 
 
 class Brand(models.Model):
-    brand_id = models.SlugField('brand ID', unique=True)
+    brand_code = models.SlugField('brand ID', unique=True)
     brand_name = models.CharField('title', max_length=500, unique=True)
 
     class Meta:
         indexes = [
-            models.Index(fields=['brand_id']),
+            models.Index(fields=['brand_code']),
         ]
 
     def __str__(self):
-        return f'{self.brand_id}/{self.brand_name}'
+        return f'{self.brand_code}/{self.brand_name}'
 
 class MainImage(models.Model):
     url = models.URLField('url', unique=True)
     def __str__(self):
-        return f'mainimage:{self.product}'    
+        return f'{self.url}'    
  
 class OtherImages(models.Model):
     url = models.URLField('url')
@@ -90,7 +90,7 @@ class OtherImages(models.Model):
         related_name='other_images'
     )
     def __str__(self):
-        return f'image:{self.product}'
+        return f'{self.product},{self.url}'
     
 class Vendor(models.Model):
     name = models.SlugField('vendor name', unique=True)
