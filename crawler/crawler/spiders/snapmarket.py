@@ -5,7 +5,7 @@ from crawler.spiders.utils import SNAPMARKET_CATEGORY_ADAPTER
 
 
 class SnapMarketSpider(scrapy.Spider):
-    name = "snapmaeket"
+    name = "snapmarket"
     
     # urls of categories
     start_urls = [
@@ -57,15 +57,15 @@ class SnapMarketSpider(scrapy.Spider):
         response = response.json()
         cat_id = self.get_category_id(response)
         
-        item['category'] = SNAPMARKET_CATEGORY_ADAPTER.get(cat_id)
-        item['selling_info'] = self.get_selling_info(response)
         item['product_id'] = self.get_product_id(response)
         item['title'] = self.get_title(response)
         item['description'] = self.get_description(response)
         item['status'] = self.get_status(response)
-        item['rating_value'] = self.get_rating_value(response)
-        item['brand'] = self.get_brand(response)
+        item['selling_info'] = self.get_selling_info(response)
         item['images'] = self.get_images(response)
+        item['rating_value'] = self.get_rating_value(response)
+        item['category'] = SNAPMARKET_CATEGORY_ADAPTER.get(cat_id)  
+        item['brand'] = self.get_brand(response)       
         item['vendor'] = {"name":"snappmarket", "url":"https://snapp.market/"}
         
         yield item

@@ -27,7 +27,7 @@ class DigikalaSpider(scrapy.Spider):
         url = response.url
         response = response.json()
         total_pages = response['data']['pager']['total_pages']
-        for page_num in range(1, total_pages+1):
+        for page_num in range(1, 15):
             yield scrapy.Request(
                 url= url + f'?page={page_num}',
                 callback=self.product_url_parse
@@ -51,15 +51,15 @@ class DigikalaSpider(scrapy.Spider):
         cat_id = response.meta['category_id']     
         response = response.json()
         
-        item['category'] = DIGIKALA_CATEGORY_ADAPTER.get(cat_id)
-        item['selling_info'] = self.get_selling_info(response)
         item['product_id'] = self.get_product_id(response)
         item['title'] = self.get_title(response)
         item['description'] = self.get_description(response)
         item['status'] = self.get_status(response)
-        item['rating_value'] = self.get_rating_value(response)
-        item['brand'] = self.get_brand(response)
-        item['images'] = self.get_images(response)
+        item['selling_info'] = self.get_selling_info(response)
+        item['images'] = self.get_images(response)  
+        item['rating_value'] = self.get_rating_value(response)      
+        item['category'] = DIGIKALA_CATEGORY_ADAPTER.get(cat_id)    
+        item['brand'] = self.get_brand(response)      
         item['vendor'] = {"name":"digikala", "url":"https://www.digikala.com/"}
         
         yield item
