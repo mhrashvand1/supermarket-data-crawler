@@ -9,7 +9,6 @@ class Product(models.Model):
     ]
     
     product_id = models.SlugField('product_id', unique=True) 
-    #main category  
     category = models.ForeignKey(
         to='Category', to_field='cat_id',
         on_delete=models.SET_NULL, 
@@ -23,7 +22,12 @@ class Product(models.Model):
     vendor = models.ForeignKey(
         to='Vendor', to_field='name', on_delete=models.CASCADE,
         related_name='products'
-    )   
+    )  
+    main_image = models.ForeignKey(
+        to='MainImage', to_field='url', on_delete=models.SET_NULL,
+        related_name='products', null=True, blank=True
+    )  
+    
     title = models.CharField('title', max_length=500, null=True, blank=True)
     description = models.TextField('description', null=True, blank=True)
     #Average rating given by users
@@ -74,15 +78,20 @@ class Brand(models.Model):
     def __str__(self):
         return f'{self.brand_id}/{self.brand_name}'
 
-class Images(models.Model):
-    url = models.URLField('url', null=True, blank=True)
+class MainImage(models.Model):
+    url = models.URLField('url', unique=True)
+    def __str__(self):
+        return f'mainimage:{self.product}'    
+ 
+class OtherImages(models.Model):
+    url = models.URLField('url')
     product = models.ForeignKey(
         to='Product', to_field='product_id', on_delete=models.CASCADE,
-        related_name='images', null=True)
-   
+        related_name='other_images'
+    )
     def __str__(self):
-        return f'image:{self.product}'    
- 
+        return f'image:{self.product}'
+    
 class Vendor(models.Model):
     name = models.SlugField('vendor name', unique=True)
     url = models.URLField('vendor url')
