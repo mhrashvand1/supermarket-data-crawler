@@ -27,7 +27,7 @@ class DigikalaSpider(scrapy.Spider):
         url = response.url
         response = response.json()
         total_pages = response['data']['pager']['total_pages']
-        for page_num in range(1, 15):
+        for page_num in range(1, 50):
             yield scrapy.Request(
                 url= url + f'?page={page_num}',
                 callback=self.product_url_parse
@@ -103,8 +103,8 @@ class DigikalaSpider(scrapy.Spider):
         brand = res['data']['product'].get('brand')
         if brand and isinstance(brand, dict):
             return {
-                "brand_name":brand.get("title_fa"),
                 "brand_code":quote(brand.get("title_fa")),
+                "brand_name":brand.get("title_fa"),
             }
     
     @staticmethod        
