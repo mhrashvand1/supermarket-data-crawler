@@ -22,9 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
-SECRET_KEY = 'ddd'  #for test
-
+SECRET_KEY = config('SECRET_KEY', 'ddd')
 
 
 # Application definition
@@ -74,10 +72,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "superz",
+        'USER': "superz",
+        'PASSWORD': "ERLITUremETengSIouNowNtICaPhydRoULeneUbIAbIStIvesTOLIveNsvISOngU",
+        'HOST': 'localhost',
+        'PORT': 5432,
     }
 }
 
@@ -106,3 +115,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #custom user model
 AUTH_USER_MODEL = 'account_api.User'
+
+
+#REST_FRAMEWORK = {
+#    'DEFAULT_THROTTLE_CLASSES': [
+#        'rest_framework.throttling.AnonRateThrottle',
+#        'rest_framework.throttling.UserRateThrottle'
+#    ],
+#    'DEFAULT_THROTTLE_RATES': {
+#        'anon': '100000/second',
+#        'user': '100000/second'
+#    }
+#}

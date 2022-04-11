@@ -12,6 +12,8 @@ django==4.0.3
     #   djangorestframework
 djangorestframework==3.13.1
     # via -r requirements.in
+psycopg2==2.9.3
+    # via -r requirements.in
 python-decouple==3.6
     # via -r requirements.in
 pytz==2022.1

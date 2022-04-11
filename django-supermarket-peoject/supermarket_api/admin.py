@@ -21,7 +21,7 @@ admin.site.register(Brand, BrandAdmin)
 
 
 class MainImageAdmin(admin.ModelAdmin):
-    list_display = ('url',)  
+    list_display = ('url', 'product')  
 admin.site.register(MainImage, MainImageAdmin)
 
 

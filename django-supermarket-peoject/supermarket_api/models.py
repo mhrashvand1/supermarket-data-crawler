@@ -23,10 +23,6 @@ class Product(models.Model):
         to='Vendor', to_field='name', on_delete=models.CASCADE,
         related_name='products'
     )  
-    main_image = models.ForeignKey(
-        to='MainImage', to_field='url', on_delete=models.SET_NULL,
-        related_name='products', null=True, blank=True
-    )  
     
     title = models.CharField('title', max_length=500, null=True, blank=True)
     description = models.TextField('description', null=True, blank=True)
@@ -42,8 +38,10 @@ class Product(models.Model):
             models.Index(fields=['product_id']),
             models.Index(fields=['category']),
         ]
+        ordering = ['status', 'discount_percent']
 
     def discount_diffrence(self):
+        #In some vondors there is not any selling info if status is not marketable
         if self.status == 'merketable':
             return self.price - self.discounted_price
 
@@ -54,7 +52,7 @@ class Product(models.Model):
     
 class Category(models.Model):
     cat_id = models.SlugField("category ID", unique=True)   
-    title = models.CharField('title', max_length=500, null=True, blank=True)
+    title = models.CharField('title', max_length=500, unique=True)
 
     class Meta:
         indexes = [
@@ -62,12 +60,12 @@ class Category(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.cat_id}/{self.title}'
+        return f'{self.cat_id}'
 
 
 
 class Brand(models.Model):
-    brand_code = models.SlugField('brand ID', unique=True)
+    brand_code = models.CharField('brand code', max_length=1000, unique=True)
     brand_name = models.CharField('title', max_length=500, unique=True)
 
     class Meta:
@@ -76,12 +74,16 @@ class Brand(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.brand_code}/{self.brand_name}'
+        return f'{self.brand_name}'
 
 class MainImage(models.Model):
-    url = models.URLField('url', unique=True)
+    url = models.URLField('url')
+    product = models.OneToOneField(
+        to='Product', to_field='product_id', on_delete=models.CASCADE,
+        related_name='main_image'
+    )   
     def __str__(self):
-        return f'{self.url}'    
+        return f'{self.url}'
  
 class OtherImages(models.Model):
     url = models.URLField('url')
@@ -90,7 +92,7 @@ class OtherImages(models.Model):
         related_name='other_images'
     )
     def __str__(self):
-        return f'{self.product},{self.url}'
+        return f'{self.url}'
     
 class Vendor(models.Model):
     name = models.SlugField('vendor name', unique=True)
@@ -102,4 +104,4 @@ class Vendor(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.url}' 
