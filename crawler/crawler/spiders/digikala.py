@@ -104,7 +104,7 @@ class DigikalaSpider(scrapy.Spider):
         if brand and isinstance(brand, dict):
             return {
                 "brand_name":brand.get("title_fa"),
-                "brand_id":quote(brand.get("title_fa")),
+                "brand_code":quote(brand.get("title_fa")),
             }
     
     @staticmethod        

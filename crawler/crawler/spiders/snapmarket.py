@@ -112,10 +112,10 @@ class SnapMarketSpider(scrapy.Spider):
         brand = res['product'].get('brand')
         if brand and isinstance(brand, dict):
             if brand.get('slug') == 'no-branded':
-                return {'brand_name':'متفرقه', 'brand_id':quote('متفرقه')}
+                return {'brand_name':'متفرقه', 'brand_code':quote('متفرقه')}
             return {
                 "brand_name":brand.get("title"),
-                "brand_id":quote(brand.get("title")),
+                "brand_code":quote(brand.get("title")),
             }
     
     @staticmethod        

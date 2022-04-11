@@ -21,7 +21,7 @@ class CrawlerItem(scrapy.Item):
     #fields: cat_id, title  
     category = scrapy.Field()
     #brand
-    #fields: brand_id, brand_name
+    #fields: brand_code, brand_name
     brand = scrapy.Field()
     #vendor
     #fields: name, url
