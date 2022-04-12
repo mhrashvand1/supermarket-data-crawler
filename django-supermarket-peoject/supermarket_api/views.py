@@ -3,6 +3,7 @@ from supermarket_api.permissions import IsSuperuserOrStaffOrReadOnly
 from supermarket_api.models import (
     Product, Category, Brand, MainImage, OtherImages, Vendor
 )
+from supermarket_api.pagination import StandardPagination
 from supermarket_api.serializers import (
     ProductDetailSerializer, ProductListSerializer,
     ProductCreateUpdateSerializer, CategorySerializer,BrandSerializer,
@@ -15,6 +16,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     lookup_field = 'product_id'
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
+    pagination_class = StandardPagination
     
     def get_serializer_class(self):
         if self.action == 'list':
@@ -28,18 +30,21 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     lookup_field = 'cat_id'
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
+    pagination_class = StandardPagination
     serializer_class = CategorySerializer
     
     
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
+    pagination_class = StandardPagination
     serializer_class = BrandSerializer
     
     
 class MainImageViewSet(viewsets.ModelViewSet):
     queryset = MainImage.objects.all()
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
+    pagination_class = StandardPagination
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_updates']:
             return MainImageCreateUpdateSerializer
@@ -48,7 +53,8 @@ class MainImageViewSet(viewsets.ModelViewSet):
     
 class OtherImagesViewSet(viewsets.ModelViewSet):
     queryset = OtherImages.objects.all()
-    #permission_classes = [IsSuperuserOrStaffOrReadOnly,]    
+    #permission_classes = [IsSuperuserOrStaffOrReadOnly,]  
+    pagination_class = StandardPagination  
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_updates']:
             return OtherImagesCreateUpdateSerializer
@@ -59,4 +65,5 @@ class VendorViewSet(viewsets.ModelViewSet):
     queryset = Vendor.objects.all()
     lookup_field = 'name'
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
+    pagination_class = StandardPagination
     serializer_class = VendorSerializer

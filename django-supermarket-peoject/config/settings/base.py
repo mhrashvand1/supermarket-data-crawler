@@ -116,14 +116,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #custom user model
 AUTH_USER_MODEL = 'account_api.User'
 
-
-#REST_FRAMEWORK = {
-#    'DEFAULT_THROTTLE_CLASSES': [
-#        'rest_framework.throttling.AnonRateThrottle',
-#        'rest_framework.throttling.UserRateThrottle'
-#    ],
-#    'DEFAULT_THROTTLE_RATES': {
-#        'anon': '100000/second',
-#        'user': '100000/second'
-#    }
-#}

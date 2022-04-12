@@ -59,7 +59,7 @@ class Category(models.Model):
 
 class Brand(models.Model):
     brand_code = models.TextField('brand code', unique=True)
-    brand_name = models.CharField('title', max_length=1000, unique=True)
+    brand_name = models.CharField('brand name', max_length=1000, unique=True)
 
     class Meta:
         indexes = [
