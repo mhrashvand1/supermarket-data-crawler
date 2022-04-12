@@ -27,7 +27,7 @@ class DigikalaSpider(scrapy.Spider):
         url = response.url
         response = response.json()
         total_pages = response['data']['pager']['total_pages']
-        for page_num in range(1, 50):
+        for page_num in range(1, 10):
             yield scrapy.Request(
                 url= url + f'?page={page_num}',
                 callback=self.product_url_parse
