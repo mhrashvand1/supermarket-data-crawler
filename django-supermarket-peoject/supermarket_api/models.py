@@ -2,12 +2,7 @@ from django.db import models
 
 
 class Product(models.Model):  
-    
-    STATUS_CHOICES = [
-    ('merketable', 'merketable'),
-    ('unmarketable', 'unmarketable'),
-    ]
-    
+
     product_id = models.SlugField('product_id', unique=True) 
     category = models.ForeignKey(
         to='Category', to_field='cat_id',
@@ -24,25 +19,23 @@ class Product(models.Model):
         related_name='products'
     )  
     
-    title = models.CharField('title', max_length=500, null=True, blank=True)
+    title = models.TextField('title', max_length=500, null=True, blank=True)
     description = models.TextField('description', null=True, blank=True)
     #Average rating given by users
     rating_value = models.IntegerField('rate from 100', null=True, blank=True)
     price = models.BigIntegerField('price', null=True, blank=True)
     discounted_price = models.BigIntegerField('discounted price', null=True, blank=True)
     discount_percent = models.IntegerField('discount percent', null=True, blank=True)
-    status = models.CharField('status', max_length=12, choices=STATUS_CHOICES, null=True, blank=True)
+    status = models.CharField('status', max_length=50, null=True, blank=True)
     
     class Meta:
         indexes = [
             models.Index(fields=['product_id']),
-            models.Index(fields=['category']),
         ]
-        ordering = ['status', 'discount_percent']
 
     def discount_diffrence(self):
         #In some vondors there is not any selling info if status is not marketable
-        if self.status == 'merketable':
+        if self.status == 'marketable':
             return self.price - self.discounted_price
 
     def __str__(self):
@@ -65,7 +58,7 @@ class Category(models.Model):
 
 
 class Brand(models.Model):
-    brand_code = models.CharField('brand code', max_length=1000, unique=True)
+    brand_code = models.TextField('brand code', unique=True)
     brand_name = models.CharField('title', max_length=1000, unique=True)
 
     class Meta:
