@@ -52,7 +52,7 @@ class Product(models.Model):
     
 class Category(models.Model):
     cat_id = models.SlugField("category ID", unique=True)   
-    title = models.CharField('title', max_length=500, unique=True)
+    title = models.CharField('title', max_length=1000, unique=True)
 
     class Meta:
         indexes = [
@@ -66,7 +66,7 @@ class Category(models.Model):
 
 class Brand(models.Model):
     brand_code = models.CharField('brand code', max_length=1000, unique=True)
-    brand_name = models.CharField('title', max_length=500, unique=True)
+    brand_name = models.CharField('title', max_length=1000, unique=True)
 
     class Meta:
         indexes = [
