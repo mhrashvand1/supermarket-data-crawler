@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'supermarket_api.apps.SupermarketApiConfig',
     'account_api.apps.AccountApiConfig',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -115,4 +116,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #custom user model
 AUTH_USER_MODEL = 'account_api.User'
+
 

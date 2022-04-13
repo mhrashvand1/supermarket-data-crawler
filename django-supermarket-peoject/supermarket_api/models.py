@@ -63,7 +63,7 @@ class Brand(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=['brand_code']),
+            models.Index(fields=['brand_name']),
         ]
 
     def __str__(self):

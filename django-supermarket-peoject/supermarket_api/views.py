@@ -1,9 +1,12 @@
 from rest_framework import viewsets
 from supermarket_api.permissions import IsSuperuserOrStaffOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from supermarket_api.filters import ProductFilter
+from supermarket_api.pagination import StandardPagination
 from supermarket_api.models import (
     Product, Category, Brand, MainImage, OtherImages, Vendor
 )
-from supermarket_api.pagination import StandardPagination
 from supermarket_api.serializers import (
     ProductDetailSerializer, ProductListSerializer,
     ProductCreateUpdateSerializer, CategorySerializer,BrandSerializer,
@@ -18,6 +21,14 @@ class ProductViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
     pagination_class = StandardPagination
     
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = ProductFilter
+    search_fields = ['title', 'description', 'product_id',]
+    ordering_fields = [
+        '-rating_value', '-discount_percent',
+        'price', 'discounted_price', 'status'
+        ]
+
     def get_serializer_class(self):
         if self.action == 'list':
             return ProductListSerializer
@@ -32,13 +43,29 @@ class CategoryViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
     pagination_class = StandardPagination
     serializer_class = CategorySerializer
-    
+    filter_backends = [SearchFilter,]
+    search_fields = ['cat_id', 'title']
+
     
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
     pagination_class = StandardPagination
     serializer_class = BrandSerializer
+    filter_backends = [SearchFilter,]
+    search_fields = ['brand_name',]
+
+    
+    
+class VendorViewSet(viewsets.ModelViewSet):
+    queryset = Vendor.objects.all()
+    lookup_field = 'name'
+    #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
+    pagination_class = StandardPagination
+    serializer_class = VendorSerializer
+    filter_backends = [SearchFilter,]
+    search_fields = ['name',]
+
     
     
 class MainImageViewSet(viewsets.ModelViewSet):
@@ -61,9 +88,3 @@ class OtherImagesViewSet(viewsets.ModelViewSet):
         return OtherImagesSerializer
   
     
-class VendorViewSet(viewsets.ModelViewSet):
-    queryset = Vendor.objects.all()
-    lookup_field = 'name'
-    #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
-    pagination_class = StandardPagination
-    serializer_class = VendorSerializer
