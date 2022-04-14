@@ -133,5 +133,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+#Using old password while changing password
+OLD_PASSWORD_FIELD_ENABLED = True
 #Redirect to login url after confirm email
 LOGIN_URL = 'http://localhost:8000/login'
