@@ -16,7 +16,7 @@ class SnapMarketSpider(scrapy.Spider):
         ]
 
     def parse(self, response):
-        #get items inside each cagetory and request to their urls
+        #get items(subcategories) inside each cagetory and request to their urls
         response = response.json()
         for item in response['items']:
             item_id = item.get('id')
@@ -27,7 +27,7 @@ class SnapMarketSpider(scrapy.Spider):
             )
             
     def page_parse(self, response):
-        # request to all pages
+        # get pagination info and request to all pages
         item_id = response.meta["item_id"]
         response = response.json()
         total_products = response['metadata']['pagination']['total']
@@ -42,7 +42,7 @@ class SnapMarketSpider(scrapy.Spider):
             offset += 24
             
     def product_url_parse(self, response):
-        #get and request to products url
+        #get product_id and request to product url
         response = response.json()
         for product in response['results']:
             product_id = product.get('id')

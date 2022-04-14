@@ -23,18 +23,18 @@ class DigikalaSpider(scrapy.Spider):
         
             
     def page_parse(self, response):
-        #get total pages and request to each page
+        #get pagination info and request to each page
         url = response.url
         response = response.json()
         total_pages = response['data']['pager']['total_pages']
-        for page_num in range(1, 10):
+        for page_num in range(1, total_pages):
             yield scrapy.Request(
                 url= url + f'?page={page_num}',
                 callback=self.product_url_parse
             )
            
     def product_url_parse(self, response):
-        #request to products url and send category info from meta
+        #get product_ids and request products url and send category info from meta
         response = response.json()
         for product in response['data']['products']:
             yield scrapy.Request(

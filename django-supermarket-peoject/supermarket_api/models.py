@@ -39,7 +39,7 @@ class Product(models.Model):
             return self.price - self.discounted_price
 
     def __str__(self):
-        return f'{self.product_id}/{self.title}/{self.discounted_price}'
+        return f'{self.product_id}/{self.title}'
     
 
     

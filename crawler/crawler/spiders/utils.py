@@ -1,3 +1,4 @@
+#Convert digikala categories to our local category
 DIGIKALA_CATEGORY_ADAPTER = {
     8896:{'cat_id':'canned-food','title': 'کنسرو و غذا های آماده'},
     10612:{'cat_id':'canned-food','title': 'کنسرو و غذا های آماده'},
@@ -19,6 +20,7 @@ DIGIKALA_CATEGORY_ADAPTER = {
     10119:{'cat_id':'dietary-and-medicinal-supplements','title': 'مکمل غذایی و دارویی',},
     10102:{'cat_id':'natural-flowers','title': 'گل طبیعی',}     
 }
+#Convert snapmarket categories to our local category
 
 SNAPMARKET_CATEGORY_ADAPTER = {
     278352:{'cat_id':'canned-food','title': 'کنسرو و غذا های آماده'},
