@@ -1,27 +1,34 @@
 from itemadapter import ItemAdapter
 import requests
 
+
 class CrawlerPipeline:   
     
-      
+    
     def process_item(self, item, spider):
+        #Adapt items
         item = ItemAdapter(item).asdict()
-        #create brand
+        
+        #Send data to api:
+        #Can set headers in requests.post() for Authorization like:
+        #headers={'Authorization': 'Token SomeValidToken'}
+        
+        #brand endpoint
         requests.post(
             url='http://127.0.0.1:8000/supermarket/brands/',
             data = item.get('brand'),           
         )
-        #create category
+        #category endpoint
         requests.post(
             url='http://127.0.0.1:8000/supermarket/categories/',
             data =item.get('category')
         )
-        #create vendor
+        #vendor endpoint
         requests.post(
             url='http://127.0.0.1:8000/supermarket/vendors/',     
             data =item.get('vendor')
         )
-        #create product
+        #product endpoint
         requests.post(
             url='http://127.0.0.1:8000/supermarket/products/',   
             data ={
@@ -38,7 +45,7 @@ class CrawlerPipeline:
                 "vendor":item.get("vendor").get("name")        
             }
         )
-        #create main image
+        #main image endpoint
         requests.post(
             url="http://127.0.0.1:8000/supermarket/mainimages/",     
             data ={
@@ -46,7 +53,7 @@ class CrawlerPipeline:
                 "product":item.get("product_id")
             }
         )
-        #create other images
+        # other images endpoint
         for img_url in item.get("images").get("other_images"):
             requests.post(
                 url="http://127.0.0.1:8000/supermarket/otherimages/",        

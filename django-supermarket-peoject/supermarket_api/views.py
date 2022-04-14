@@ -20,7 +20,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     lookup_field = 'product_id'
     #permission_classes = [IsSuperuserOrStaffOrReadOnly,]
     pagination_class = StandardPagination
-    
+   
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
     search_fields = ['title', 'description', 'product_id',]
@@ -76,7 +76,7 @@ class MainImageViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_updates']:
             return MainImageCreateUpdateSerializer
         return MainImageSerializer
-  
+
     
 class OtherImagesViewSet(viewsets.ModelViewSet):
     queryset = OtherImages.objects.all()

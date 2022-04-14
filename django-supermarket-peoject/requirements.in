@@ -3,3 +3,5 @@ djangorestframework
 python-decouple
 psycopg2
 django-filter
+dj-rest-auth
+dj-rest-auth[with_social]
