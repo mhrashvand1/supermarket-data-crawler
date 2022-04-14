@@ -3,7 +3,7 @@
 
 ```bash
 sudo docker-compose -f docker-compose.dev.yml up -d
-  manage.py migrate
+manage.py migrate
 manage.py runserver
 ```
 endpoints:
@@ -12,8 +12,8 @@ endpoints:
 /supermarket/categories/  #lookup field: cat_id
 /supermarket/brands/  #lookup field: pk
 /supermarket/vendors/  #lookup field: name
-/supermarket/mainimages/  
-/supermarket/otherimages/
+/supermarket/mainimages/  #lookup field: pk
+/supermarket/otherimages/  #lookup field: pk
 /accounts/  #lookup field: username
 ```
 other endpoints:
