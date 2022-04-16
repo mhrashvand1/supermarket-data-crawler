@@ -1,5 +1,5 @@
 ## Usage
-First run django project.
+First run django project(another project in current repo).  
 then:
 ```bash
 scrapy crawl digikala  
